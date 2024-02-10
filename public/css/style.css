@@ -1,0 +1,25 @@
+.container{
+      margin: 100;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      height: 100vh;
+    }
+
+    .quadrant {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+
+    .memo {
+      padding: 10px;
+    }
+
+    .top-left { grid-column: 1; grid-row: 1; }
+    .top-right { grid-column: 2; grid-row: 1; }
+    .bottom-left { grid-column: 1; grid-row: 2; }
+    .bottom-right { grid-column: 2; grid-row: 2; }
