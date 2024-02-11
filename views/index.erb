@@ -3,37 +3,43 @@
 <head>
   <mata charset="utf-8">
   <title>sinatra</title>
-  <link rel="stylesheet" tyoe="text/css" href="css/style.css"
+  <link rel="stylesheet" href="/css/style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/image/favicon.ico">
 </head>
 
 <body>
+
+  <% memos = CSV.read('./output/Sample.csv',headers: true) %>
+  <%= settings.app_file %>
+  <%= @memo_id %>
+  <%= title = memos.select{|row| row['id']==@memo_id}.first['title'] if @memo_id %>
+  <%= content = memos.select{|row| row['id']==@memo_id}.first['content']  if @memo_id %>
+
   <h1>メモアプリ</h1>
   <div class="container">
     <div class="quadrant top-left">
     <h2 class="memo">メモ1</h2>
-    <form actionn="" method="get" class="memo-enter">
-      <div class="form-title">
-          <a href="/reference">test</a>
-      </div>
+    <form action="" method="get" class="memo-enter">
+      <ol class="form-title">
+        <% memos.each do |memo| %>
+          <a href="/memos/"<% memo['id'].to_s %>><%= memo['title'] %></a>
+        <% end %>
+      </ol>
     </form>
   </div>
+
   <div class="quadrant top-right">
-    <div class="memo">メモ2</div>
-    <ol>
-    <p><%= @title %></p>
-    <p><%= @content %></p>
-    </ol>
+    <h2 class="memo">メモ2</h2>
   </div>
   <div class="quadrant bottom-left">
-    <div class="memo">メモ3</div>
-
+    <h2 claVss="memo">メモ3</h2>
+    <h2 class="memo_title"><%= title %><h2>
+    <div class="memo-content"><%= content %></div>
   </div>
   <div class="quadrant bottom-right">
-    <div class="memo">メモ4</div>
+    <h2 class="memo">メモ4</h2>
+    <p>/*TOdo*/</p>
   </div>
-  </div> 
-
 </body>
 </html>
-
