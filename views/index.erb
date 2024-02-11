@@ -23,7 +23,7 @@
     <form action="" method="get" class="memo-enter">
       <ol class="form-title">
         <% memos.each do |memo| %>
-          <a href="/memos/"<% memo['id'].to_s %>><%= memo['title'] %></a>
+          <a href="/memos/<%= memo['id'].to_s %>"><%= memo['title'] %></a>
         <% end %>
       </ol>
     </form>
