@@ -1,22 +1,36 @@
+body{ 
+      background-color: brown;
+}
+.main-content{
+      
+      max-width: 100em;
+      min-width: 5em;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+}
 .container{
-      margin: 100;
       display: grid;
+      margin:0 10em;
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: repeat(2, 1fr);
       height: 100vh;
     }
 
     .quadrant {
+      overflow: auto;
+      background-color: white;
+      margin: 1em 10em;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid #ccc;
+      border: 5px solid #ccc;
       box-sizing: border-box;
     }
 
 
     .memo {
-      padding: 10px;
+      padding: 10px ;
     }
 
     .top-left { grid-column: 1; grid-row: 1; }
