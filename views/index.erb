@@ -9,7 +9,6 @@
 <link rel="shortcut icon" href="/image/favicon.ico">
 
 <body>
-
   <div class="main-content">
   <h1>メモアプリ</h1>
   <div class="container">
@@ -18,7 +17,7 @@
     <form action="" method="get" class="memo-enter">
       <ol class="form-title">
         <% @memos.memos.each do |memo| %>
-          <a href="/memos/<%= memo['id'].to_s %>">・<%= memo['title'] %></a> 
+          <a href="/memos/<%= memo['id'].to_s %>">・<%= memo['title'] %></a>
         <% end %>
       </ol>
     </form>
@@ -36,14 +35,17 @@
         <input type="text" name="content" id="content" required>
       </div>
         <div class="memo-submit">
-        <input type="submit" value="保存" />
+        <input type="submit" value="保存">
   </div>
     </form>
   </div>
   <div class="quadrant bottom-left">
     <h2 claVss="memo">メモ3</h2>
-    <h2 class="memo_title"><%= @memos.showtitle(@show_memo_id)  %><h2>
+    <h2 class="memo_title<%= @show_memo_id %>"><%= @memos.showtitle(@show_memo_id) %><h2>
     <div class="memo-content"><%= @memos.showcontent(@show_memo_id) %></div>
+    <form action="/memos/<%= @show_memo_id %>" method="post">
+      <button type="hidden" id="_method" name="_method" value="delete">削除</button>
+    </form>
   </div>
   <div class="quadrant bottom-right">
     <h2 class="memo">メモ4</h2>
