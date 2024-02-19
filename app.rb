@@ -87,7 +87,7 @@ class Memo
   end
 
   def exist?(id)
-    !!@memos.select { |row| row['id'] == id }
+    !!@memos.select { |row| row['id'] == id }.first
   end
 
   def length
