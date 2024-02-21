@@ -17,13 +17,24 @@ get '/memos/:memo_id' do
   memos = Memo.new
   show_memo_id = params['memo_id']
   pass unless memos.exist?(show_memo_id)
-
   @memos = memos
   @show_memo_id = show_memo_id
 
+  @eitflg = true
   erb :index
 end
 
+get '/memos/:memo_id/edit' do
+  status 200
+  memos = Memo.new
+  show_memo_id = params['memo_id']
+  pass unless memos.exist?(show_memo_id)
+
+  @memos = memos
+  @show_memo_id = show_memo_id
+  @editflg = true
+  erb :index
+end
 post '/memos/' do
   status 201
   memos = Memo.new

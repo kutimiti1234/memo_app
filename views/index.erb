@@ -28,11 +28,11 @@
     <form action="/memos/" method="post" class="add-memo-form">
       <div class="title-iput">
         <label for="title">タイトル</label>
-        <input type="text" name="title" id="title" required>
+        <textarea type="text" name="title" id="title" required></textarea>
       </div>
       <div class="content-input">
         <label for="content">内容</label>
-        <input type="text" name="content" id="content" required>
+        <textarea type="text" name="content" id="content"></textarea>
       </div>
         <div class="memo-submit">
         <input type="submit" value="保存">
@@ -43,13 +43,28 @@
     <h2 claVss="memo">メモ3</h2>
     <h2 class="memo_title<%= @show_memo_id %>"><%= @memos.showtitle(@show_memo_id) %><h2>
     <div class="memo-content"><%= @memos.showcontent(@show_memo_id) %></div>
+    <form action="/memos/<%= @show_memo_id %>/edit" method="get">
+      <button>編集</button>
+    </form>
     <form action="/memos/<%= @show_memo_id %>" method="post">
       <button type="hidden" id="_method" name="_method" value="delete">削除</button>
     </form>
   </div>
   <div class="quadrant bottom-right">
-    <h2 class="memo">メモ4</h2>
-    <p>/*Todo*/</p>
+    <h2 class="memo">メモ</h2>
+    <form action="/memos/" method="post" class="add-memo-form">
+      <div class="title-iput">
+        <label for="title">タイトル</label>
+        <textarea type="text" name="title" id="title" required <%= "disabled" unless @editflg %>><%= @memos.showtitle(@show_memo_id) %></textarea>
+      </div>
+      <div class="content-input">
+        <label for="content">変更</label>
+        <textarea type="text" name="content" id="content" <%= "disabled" unless @editflg %>><%= @memos.showcontent(@show_memo_id) %></textarea>
+      </div>
+        <div class="memo-submit">
+        <button type="submit" value="保存" <%= "disabled" unless @editflg %>>編集</button>
+  </div>
+    </form>
   </div>
   </div>
 </body>
