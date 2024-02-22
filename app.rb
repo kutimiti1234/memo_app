@@ -16,11 +16,10 @@ get '/memos/:memo_id' do
   status 200
   memos = Memo.new
   show_memo_id = params['memo_id']
-  pass unless memos.exist?(show_memo_id)
+  pass unless  memos.exist?(show_memo_id)
   @memos = memos
   @show_memo_id = show_memo_id
 
-  @eitflg = true
   erb :index
 end
 
@@ -28,7 +27,7 @@ get '/memos/:memo_id/edit' do
   status 200
   memos = Memo.new
   show_memo_id = params['memo_id']
-  pass unless memos.exist?(show_memo_id)
+  pass if memos.blank?(show_memo_id)
 
   @memos = memos
   @show_memo_id = show_memo_id
@@ -47,8 +46,7 @@ delete '/memos/:memo_id' do
   status 200
   memos = Memo.new
   show_memo_id = params['memo_id']
-  pass unless memos.exist?(show_memo_id)
-  pass if memos.length == 1
+  pass if memos.blank?(show_memo_id) || memos.length == 1
 
   memos.delete(show_memo_id)
   redirect '/'
@@ -63,7 +61,7 @@ patch '/memos/:memo_id' do
   status 200
   memos = Memo.new
   id = params['memo_id']
-  pass unless memos.exist?(id)
+  pass if memos.blank?(id)
 
   memos.update(id: id, title: params['title'], content: params['content'])
   redirect '/'
@@ -114,6 +112,10 @@ class Memo
 
   def exist?(id)
     !!@memos.select { |row| row['id'] == id }.first
+  end
+
+  def blank?(id)
+    !@memos.select { |row| row['id'] == id }.first
   end
 
   def length
