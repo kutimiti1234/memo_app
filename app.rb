@@ -35,12 +35,12 @@ get '/memos/:memo_id/edit' do
   @editflg = true
   erb :index
 end
+
 post '/memos/' do
   status 201
   memos = Memo.new
   memos.add(title: params[:title], content: params[:content])
   redirect '/'
-  erb :index
 end
 
 delete '/memos/:memo_id' do
@@ -57,6 +57,16 @@ end
 delete '/memos/:memo_id' do
   status 400
   erb :alert
+end
+
+patch '/memos/:memo_id' do
+  status 200
+  memos = Memo.new
+  id = params['memo_id']
+  pass unless memos.exist?(id)
+
+  memos.update(id: id, title: params['title'], content: params['content'])
+  redirect '/'
 end
 
 not_found do
@@ -78,7 +88,12 @@ class Memo
     File.write('./output/Sample.csv', @memos)
   end
 
-  def update(id); end
+  def update(id:, title:, content:)
+    row_index = @memos['id'].find_index(id)
+    @memos[row_index]['title'] = title
+    @memos[row_index]['content'] = content
+    File.write('./output/Sample.csv', @memos)
+  end
 
   def delete(id)
     @memos = CSV::Table.new(@memos.reject { |row| row['id'] == id })
