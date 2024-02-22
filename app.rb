@@ -8,7 +8,7 @@ require 'securerandom'
 get '/' do
   memos = Memo.new
   @memos = memos
-  @show_memo_id = memos.getfirstmemoid
+  @show_memo_id = memos.first_memo_id
   erb :index
 end
 
@@ -80,22 +80,12 @@ class Memo
     @memos = CSV.read('./output/Sample.csv', headers: true)
   end
 
-  def add(title:, content:)
-    new_id = SecureRandom.uuid
-    @memos << CSV::Row.new(%w[id title content], [new_id, title, content])
-    File.write('./output/Sample.csv', @memos)
+  def first_memo_id
+    @memos.first['id']
   end
 
-  def update(id:, title:, content:)
-    row_index = @memos['id'].find_index(id)
-    @memos[row_index]['title'] = title
-    @memos[row_index]['content'] = content
-    File.write('./output/Sample.csv', @memos)
-  end
-
-  def delete(id)
-    @memos = CSV::Table.new(@memos.reject { |row| row['id'] == id })
-    File.write('./output/Sample.csv', @memos)
+  def length
+    @memos.length
   end
 
   def showtitle(id)
@@ -106,19 +96,33 @@ class Memo
     @memos.select { |row| row['id'] == id }.first['content']
   end
 
-  def getfirstmemoid
-    @memos.first['id']
+  def write_csv
+    File.write('./output/Sample.csv', @memos)
+  end
+
+  def add(title:, content:)
+    new_id = SecureRandom.uuid
+    @memos << CSV::Row.new(%w[id title content], [new_id, title, content])
+    write_csv
+  end
+
+  def update(id:, title:, content:)
+    row_index = @memos['id'].find_index(id)
+    @memos[row_index]['title'] = title
+    @memos[row_index]['content'] = content
+    write_csv
+  end
+
+  def delete(id)
+    @memos = CSV::Table.new(@memos.reject { |row| row['id'] == id })
+    write_csv
   end
 
   def exist?(id)
-    !!@memos.select { |row| row['id'] == id }.first
+    !@memos.select { |row| row['id'] == id }.empty?
   end
 
   def blank?(id)
-    !@memos.select { |row| row['id'] == id }.first
-  end
-
-  def length
-    @memos.length
+    @memos.select { |row| row['id'] == id }.empty?
   end
 end
