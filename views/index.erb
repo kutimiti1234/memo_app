@@ -13,18 +13,16 @@
   <h1>メモアプリ</h1>
   <div class="container">
     <div class="quadrant top-left">
-    <h2 class="memo">メモ1</h2>
+    <h2 class="ui-title">メモ1</h2>
     <form action="" method="get" class="memo-enter">
-      <ol class="form-title">
         <% @memos.memos.each do |memo| %>
-          <a href="/memos/<%= memo['id'].to_s %>">・<%= memo['title'] %></a>
+          <a class='memo-list' href="/memos/<%= memo['id'].to_s %>">・<%= memo['title'] %></a>
         <% end %>
-      </ol>
     </form>
   </div>
 
   <div class="quadrant top-right">
-    <h2 class="memo">メモ2</h2>
+    <h2 class="ui-title">メモ2</h2>
     <form action="/memos/" method="post" class="add-memo-form">
       <div class="title-iput">
         <label for="title">タイトル</label>
@@ -40,9 +38,9 @@
     </form>
   </div>
   <div class="quadrant bottom-left">
-    <h2 claVss="memo">メモ3</h2>
-    <h2 class="memo_title<%= @show_memo_id %>"><%= @memos.showtitle(@show_memo_id) %><h2>
-    <div class="memo-content"><%= @memos.showcontent(@show_memo_id) %></div>
+    <h2 class="ui-title">メモ3</h2>
+    <h2 class="memo_title<%= @show_memo_id %>"><%=h @memos.showtitle(@show_memo_id) %><h2>
+    <div class="memo-content"><%=h @memos.showcontent(@show_memo_id) %></div>
     <form action="/memos/<%= @show_memo_id %>/edit" method="get">
       <button>編集</button>
     </form>
@@ -51,7 +49,7 @@
     </form>
   </div>
   <div class="quadrant bottom-right">
-    <h2 class="memo">メモ</h2>
+    <h2 class="ui-title">メモ</h1>
     <form action="/memos/<%= @show_memo_id %>" method="post" class="add-memo-form">
       <div class="title-iput">
         <label for="title">タイトル</label>
