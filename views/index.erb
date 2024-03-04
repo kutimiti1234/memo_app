@@ -14,7 +14,7 @@
   <div class="container">
     <div class="quadrant top-left">
     <h2 class="ui-title">メモ1</h2>
-    <form action="" method="get" class="memo-enter">
+    <form action="" method="get" class="memo-list">
         <% @memos.memos.each do |memo| %>
           <a class='memo-list' href="/memos/<%= memo['id'].to_s %>">・<%= memo['title'] %></a>
         <% end %>
@@ -23,46 +23,52 @@
 
   <div class="quadrant top-right">
     <h2 class="ui-title">メモ2</h2>
-    <form action="/memos/" method="post" class="add-memo-form">
-      <div class="title-iput">
+    <form action="/memos/" method="post" class="memo-body">
+      <div class="memo-title">
         <label for="title">タイトル</label>
         <textarea type="text" name="title" id="title" required></textarea>
       </div>
-      <div class="content-input">
+      <div class="memo-content">
         <label for="content">内容</label>
-        <textarea type="text" name="content" id="content"></textarea>
+        <textarea rows="5" type="text" name="content" id="content"></textarea>
       </div>
         <div class="memo-submit">
         <input type="submit" value="保存">
-  </div>
     </form>
+  </div>
+
   </div>
   <div class="quadrant bottom-left">
     <h2 class="ui-title">メモ3</h2>
-    <h2 class="memo_title<%= @show_memo_id %>"><%=h @memos.showtitle(@show_memo_id) %><h2>
-    <div class="memo-content"><%=h @memos.showcontent(@show_memo_id) %></div>
+    <div class="memo-body">
+    <div class="memo-title<%= @show_memo_id %>"><%= h @memos.showtitle(@show_memo_id) %></div>
+    <div class="memo-content"><%= h @memos.showcontent(@show_memo_id) %></div>
+    <div class="ui-buttons">
     <form action="/memos/<%= @show_memo_id %>/edit" method="get">
       <button>編集</button>
     </form>
     <form action="/memos/<%= @show_memo_id %>" method="post">
       <button type="hidden" id="_method" name="_method" value="delete">削除</button>
     </form>
+    </div>
+    </div>
   </div>
+
   <div class="quadrant bottom-right">
-    <h2 class="ui-title">メモ</h1>
-    <form action="/memos/<%= @show_memo_id %>" method="post" class="add-memo-form">
-      <div class="title-iput">
+    <h2 class="ui-title">メモ3</h1>
+    <form action="/memos/<%= @show_memo_id %>" method="post" class="memo-body">
+      <div class="memo-title">
         <label for="title">タイトル</label>
         <textarea type="text" name="title" id="title" required <%= "disabled" unless @editflg %>><%= @memos.showtitle(@show_memo_id) %></textarea>
       </div>
-      <div class="content-input">
-        <label for="content">変更</label>
-        <textarea type="text" name="content" id="content" <%= "disabled" unless @editflg %>><%= @memos.showcontent(@show_memo_id) %></textarea>
+      <div class="memo-content">
+        <label for="content">内容</label>
+        <textarea rows="5" type="text" name="content" id="content" <%= "disabled" unless @editflg %>><%= @memos.showcontent(@show_memo_id) %></textarea>
       </div>
       <button type="hidden" id="_method" name="_method" value="patch"<%= "disabled" unless @editflg %>>編集</button>
-  </div>
     </form>
   </div>
+
   </div>
 </body>
 </html>
