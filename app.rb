@@ -59,7 +59,7 @@ delete '/memos/:memo_id' do
 end
 
 delete '/memos/:memo_id' do
-  status 400
+  status 405
   erb :alert
 end
 
