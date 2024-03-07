@@ -7,5 +7,5 @@
 ```bundle install```
 
 2.下記コマンドでアプリを立ち上げ
-```bundle exec ruby app.rb``
+```bundle exec ruby app.rb```
 
