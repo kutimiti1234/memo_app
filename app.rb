@@ -12,6 +12,10 @@ helpers do
 end
 
 get '/' do
+  redirect '/memos'
+end
+
+get '/memos' do
   memos = Memo.new
   @memos = memos
   @show_memo_id = memos.first_memo_id
@@ -45,7 +49,7 @@ post '/memos/' do
   status 201
   memos = Memo.new
   memos.add(title: params[:title], content: params[:content])
-  redirect '/'
+  redirect '/memos'
 end
 
 delete '/memos/:memo_id' do
@@ -55,7 +59,7 @@ delete '/memos/:memo_id' do
   pass if memos.blank?(show_memo_id) || memos.length == 1
 
   memos.delete(show_memo_id)
-  redirect '/'
+  redirect '/memos'
 end
 
 delete '/memos/:memo_id' do
@@ -70,7 +74,7 @@ patch '/memos/:memo_id' do
   pass if memos.blank?(id)
 
   memos.update(id: id, title: params['title'], content: params['content'])
-  redirect '/'
+  redirect '/memos'
 end
 
 not_found do
