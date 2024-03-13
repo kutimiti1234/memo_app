@@ -11,7 +11,6 @@ gem 'webrick', '>= 1.8.1'
 
 gem 'rackup', '~> 2.1'
 
-gem 'redcarpet', '>=3.6.0'
 gem 'sinatra-contrib', '~> 4.0'
 
 gem 'erb_lint', require: false

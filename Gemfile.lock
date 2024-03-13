@@ -92,7 +92,6 @@ GEM
       loofah (~> 2.21)
       nokogiri (~> 1.14)
     rainbow (3.1.1)
-    redcarpet (3.6.0)
     regexp_parser (2.9.0)
     rexml (3.2.6)
     rubocop (1.60.2)
@@ -130,7 +129,6 @@ PLATFORMS
 DEPENDENCIES
   erb_lint
   rackup (~> 2.1)
-  redcarpet (>= 3.6.0)
   sinatra (>= 4.0.0)!
   sinatra-contrib (~> 4.0)
   webrick (>= 1.8.1)
