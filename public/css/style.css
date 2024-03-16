@@ -1,53 +1,6 @@
-body{ 
-      background-color: brown;
-}
-    .container{
-      display: grid;
-      margin:0 10em;
-      grid-template-columns: 0.5fr repeat(2, 1fr) 0.5fr;
-      grid-template-rows: repeat(2, 1fr) 0.3fr;
-      height: 100vh;
-      gap: 20px;
-    }
-
-    .quadrant {
-      display:grid;
-      background-color: white;
-      border: 5px solid #ccc;
-      box-sizing: border-box;
-      overflow: auto;
-      word-wrap: break-word;
-
-      grid-template-rows: 0.3fr 1fr 
-    }
-
-    .memo-body{
-      display:grid;
-      grid-template-rows: 0.5fr 2fr 0.1fr 
-    }
-    
-    .ui-buttons{
-      display: grid;
-      grid-row: 3;
-    }
-
-    label{
+ label{
       display:inline-block;
-      width: 300px
+      width: 2.5em;
+      vertical-align:top;
     }
 
-    .memo-list{
-      display:flex;
-      flex-flow: column;
-    }
-
-    .top-left { grid-column: 2; grid-row: 1; }
-    .top-right { grid-column: 3; grid-row: 1; }
-    .bottom-left { grid-column: 2; grid-row: 2; }
-    .bottom-right { grid-column: 3; grid-row: 2; }
-
-    .ui-title{grid-row:1}
-    .memo-body{grid-row:2}
-    
-    .memo-title{grid-row:1}
-    .memo-content{grid-row:2}

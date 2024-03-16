@@ -16,49 +16,54 @@ get '/' do
 end
 
 get '/memos' do
-  memos = Memo.new
-  @memos = memos
-  @show_memo_id = memos.first_memo_id
+  database = MemoDatabase.new
+  @memos = database.load_all_memos
+  @title = 'top'
   erb :index
+end
+
+get '/memos/new' do
+  @title = 'New memo'
+  erb :create
 end
 
 get '/memos/:memo_id' do
   status 200
-  memos = Memo.new
-  show_memo_id = params['memo_id']
-  pass unless  memos.exist?(show_memo_id)
-  @memos = memos
-  @show_memo_id = show_memo_id
+  database = MemoDatabase.new
+  @memo = database.search_memo_by_id(params['memo_id'])
+  @id = params['memo_id']
+  @title = 'Show memo'
 
-  erb :index
+  erb :show
 end
 
 get '/memos/:memo_id/edit' do
   status 200
-  memos = Memo.new
-  show_memo_id = params['memo_id']
-  pass if memos.blank?(show_memo_id)
+  database = MemoDatabase.new
+  @memo = database.search_memo_by_id(params['memo_id'])
+  @id = params['memo_id']
+  @title = 'Edit memo'
+  pass unless @memo
 
-  @memos = memos
-  @show_memo_id = show_memo_id
-  @editflg = true
-  erb :index
+  erb :edit
 end
 
 post '/memos/' do
   status 201
-  memos = Memo.new
-  memos.add(title: params[:title], content: params[:content])
+  database = MemoDatabase.new
+  database.add(title: params[:title], content: params[:content])
   redirect '/memos'
 end
 
 delete '/memos/:memo_id' do
   status 200
-  memos = Memo.new
-  show_memo_id = params['memo_id']
-  pass if memos.blank?(show_memo_id) || memos.length == 1
+  database = MemoDatabase.new
+  memo = database.search_memo_by_id(params['memo_id'])
+  memos = database.load_all_memos
+  id = params['memo_id']
+  pass if memo.nil? || memos.length == 1
 
-  memos.delete(show_memo_id)
+  database.delete(id)
   redirect '/memos'
 end
 
@@ -69,11 +74,10 @@ end
 
 patch '/memos/:memo_id' do
   status 200
-  memos = Memo.new
+  database = MemoDatabase.new
   id = params['memo_id']
-  pass if memos.blank?(id)
 
-  memos.update(id: id, title: params['title'], content: params['content'])
+  database.update(id: id, title: params['title'], content: params['content'])
   redirect '/memos'
 end
 
@@ -83,56 +87,40 @@ not_found do
 end
 
 # メモの読み書き、表示、削除用のクラス。
-class Memo
+class MemoDatabase
   attr_accessor :memos
 
   def initialize
     @memos = CSV.read('./output/Sample.csv', headers: true)
   end
 
-  def first_memo_id
-    @memos.first['id']
+  def load_all_memos
+    @memos
   end
 
-  def length
-    @memos.length
+  def search_memo_by_id(id)
+    @memos.select { |row| row['id'] == id }.first
   end
 
-  def showtitle(id)
-    @memos.select { |row| row['id'] == id }.first['title']
-  end
-
-  def showcontent(id)
-    @memos.select { |row| row['id'] == id }.first['content']
-  end
-
-  def write_csv
+  def write
     File.write('./output/Sample.csv', @memos)
   end
 
   def add(title:, content:)
     new_id = SecureRandom.uuid
     @memos << CSV::Row.new(%w[id title content], [new_id, title, content])
-    write_csv
+    write
   end
 
   def update(id:, title:, content:)
     row_index = @memos['id'].find_index(id)
     @memos[row_index]['title'] = title
     @memos[row_index]['content'] = content
-    write_csv
+    write
   end
 
   def delete(id)
     @memos = CSV::Table.new(@memos.reject { |row| row['id'] == id })
-    write_csv
-  end
-
-  def exist?(id)
-    !@memos.select { |row| row['id'] == id }.empty?
-  end
-
-  def blank?(id)
-    @memos.select { |row| row['id'] == id }.empty?
+    write
   end
 end

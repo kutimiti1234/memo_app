@@ -1,73 +1,10 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <mata charset="utf-8">
-  <title>sinatra</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<link rel="shortcut icon" href="/image/favicon.ico">
-
-<body>
-  <div class="main-content">
-  <h1>メモアプリ</h1>
-  <div class="container">
-    <div class="quadrant top-left">
-    <h2 class="ui-title">#メモリスト</h2>
-    <form action="" method="get" class="memo-list">
-        <% @memos.memos.each do |memo| %>
-          <a class='memo-list' href="/memos/<%= memo['id'].to_s %>">・<%= memo['title'] %></a>
-        <% end %>
-    </form>
-  </div>
-
-  <div class="quadrant top-right">
-    <h2 class="ui-title">#メモ新規作成</h2>
-    <form action="/memos/" method="post" class="memo-body">
-      <div class="memo-title">
-        <label for="title">タイトル</label>
-        <textarea type="text" name="title" id="title" required></textarea>
-      </div>
-      <div class="memo-content">
-        <label for="content">内容</label>
-        <textarea rows="5" type="text" name="content" id="content"></textarea>
-      </div>
-        <div class="memo-submit">
-        <input type="submit" value="保存">
-    </form>
-  </div>
-
-  
-  </div>
-  <div class="quadrant bottom-left">
-    <h2 class="ui-title">#メモ閲覧</h2>
-    <div class="memo-body">
-    <div class="memo-title"><%=h @memos.showtitle(@show_memo_id) %></div>
-    <div class="memo-content"><%=h @memos.showcontent(@show_memo_id) %></div>
-    <form class="ui-buttons" action="/memos/<%= @show_memo_id %>/edit" method="get">
-      <button>編集</button>
-    </form>
-    <form  class ="ui-buttons"action="/memos/<%= @show_memo_id %>" method="post">
-      <button type="hidden" id="_method" name="_method" value="delete">削除</button>
-    </form>
-    </div>
-  </div>
-
-  <div class="quadrant bottom-right">
-    <h2 class="ui-title">#メモ更新</h1>
-    <form action="/memos/<%= @show_memo_id %>" method="post" class="memo-body">
-      <div class="memo-title">
-        <label for="title">タイトル</label>
-        <textarea type="text" name="title" id="title" required <%= "disabled" unless @editflg %>><%=h @memos.showtitle(@show_memo_id) %></textarea>
-      </div>
-      <div class="memo-content">
-        <label for="content">内容</label>
-        <textarea rows="5"type="text" name="content" id="content" <%= "disabled" unless @editflg %>><%=h @memos.showcontent(@show_memo_id) %></textarea>
-      </div>
-      <button type="hidden" id="_method" name="_method" value="patch"<%= "disabled" unless @editflg %>>編集</button>
-    </form>
-  </div>
-
-  </div>
-</body>
-</html>
+<form class="memo-list" action="" method="get">
+    <% @memos.each do |memo| %>
+      <a class='memo-list' href="/memos/<%= memo['id'].to_s %>">・<%= memo['title'] %></a>
+      <br>
+    <% end %>
+</form>
+</div>
+<form class="memo-new" action="/memos/new" method="get">
+  <button class="add-button">追加</button>
+</form>

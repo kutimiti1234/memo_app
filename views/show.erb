@@ -1,0 +1,8 @@
+  <div class="memo-title"><%= h @memo["title"] %></div>
+  <div class="memo-content"><%= h @memo["content"] %></div>
+  <form class="ui-buttons" action="/memos/<%= @id %>/edit" method="get">
+    <button>編集</button>
+  </form>
+  <form class="ui-buttons" action="/memos/<%= @id %>" method="post">
+    <button type="hidden" id="_method" name="_method" value="delete">削除</button>
+  </form>
