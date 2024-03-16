@@ -31,6 +31,7 @@ get '/memos/:memo_id' do
   status 200
   database = MemoDatabase.new
   @memo = database.search_memo_by_id(params['memo_id'])
+  pass if @memo.nil?
   @id = params['memo_id']
   @title = 'Show memo'
 
@@ -59,17 +60,11 @@ delete '/memos/:memo_id' do
   status 200
   database = MemoDatabase.new
   memo = database.search_memo_by_id(params['memo_id'])
-  memos = database.load_all_memos
   id = params['memo_id']
-  pass if memo.nil? || memos.length == 1
+  pass if memo.nil?
 
   database.delete(id)
   redirect '/memos'
-end
-
-delete '/memos/:memo_id' do
-  status 405
-  erb :alert
 end
 
 patch '/memos/:memo_id' do
@@ -91,6 +86,11 @@ class MemoDatabase
   attr_accessor :memos
 
   def initialize
+    unless File.exist?('./output/Sample.csv')
+      CSV.open('./output/Sample.csv', 'w') do |csv|
+        csv << %w[id title content]
+      end
+    end
     @memos = CSV.read('./output/Sample.csv', headers: true)
   end
 
