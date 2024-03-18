@@ -19,6 +19,8 @@ get '/memos' do
   database = MemoDatabase.new
   @memos = database.load_all_memos
   @title = 'top'
+
+  status 200
   erb :index
 end
 
@@ -28,36 +30,35 @@ get '/memos/new' do
 end
 
 get '/memos/:memo_id' do
-  status 200
   database = MemoDatabase.new
   @memo = database.search_memo_by_id(params['memo_id'])
   pass if @memo.nil?
   @id = params['memo_id']
   @title = 'Show memo'
 
+  status 200
   erb :show
 end
 
 get '/memos/:memo_id/edit' do
-  status 200
   database = MemoDatabase.new
   @memo = database.search_memo_by_id(params['memo_id'])
   @id = params['memo_id']
   @title = 'Edit memo'
   pass unless @memo
 
+  status 200
   erb :edit
 end
 
 post '/memos/' do
-  status 201
   database = MemoDatabase.new
   database.add(title: params[:title], content: params[:content])
+
   redirect '/memos'
 end
 
 delete '/memos/:memo_id' do
-  status 200
   database = MemoDatabase.new
   memo = database.search_memo_by_id(params['memo_id'])
   id = params['memo_id']
@@ -68,7 +69,6 @@ delete '/memos/:memo_id' do
 end
 
 patch '/memos/:memo_id' do
-  status 200
   database = MemoDatabase.new
   id = params['memo_id']
 
