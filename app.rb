@@ -87,10 +87,11 @@ class MemoDatabase
 
   def initialize
     unless File.exist?('./output/Sample.csv')
-      CSV.open('./output/Sample.csv', 'w') do |csv|
-        csv << %w[id title content]
-      end
+      File.write('./output/Sample.csv', <<~CSV)
+        id,title,contetnt
+      CSV
     end
+
     @memos = CSV.read('./output/Sample.csv', headers: true)
   end
 

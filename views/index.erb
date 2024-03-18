@@ -1,6 +1,6 @@
 <form class="memo-list" action="" method="get">
     <% @memos.each do |memo| %>
-      <a class='memo-list' href="/memos/<%= memo['id'].to_s %>">・<%= memo['title'] %></a>
+      <a class='memo-list' href="/memos/<%= memo['id'].to_s %>">・<%= h memo['title'] %></a>
       <br>
     <% end %>
 </form>
