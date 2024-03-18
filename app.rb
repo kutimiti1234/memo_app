@@ -26,6 +26,8 @@ end
 
 get '/memos/new' do
   @title = 'New memo'
+
+  status 200
   erb :create
 end
 
