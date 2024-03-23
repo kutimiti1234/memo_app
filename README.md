@@ -8,6 +8,5 @@
 1.このREADMEがあるディレクトリで以下を実行。
 ```bundle install```
 
-2.下記コマンドでアプリを立ち上げ
-```bundle exec ruby app.rb```
+2. ```bundle exec ruby app.rb```で実行
 
