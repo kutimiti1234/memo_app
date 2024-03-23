@@ -87,10 +87,12 @@ end
 class MemoDatabase
   attr_accessor :memos
 
-  CSV_PATH = './ouptut/Sample.csv'
+  OUTPUT_PATH = './output/'
+  CSV_PATH = './output/Sample.csv'
 
   def initialize
     unless File.exist?(CSV_PATH)
+      Dir.mkdir('output', 0o755) unless File.exist?(OUTPUT_PATH)
       File.write(CSV_PATH, <<~CSV)
         id,title,contetnt
       CSV
