@@ -7,5 +7,9 @@
 
 1.このREADMEがあるディレクトリで以下を実行。
 ```bundle install```
-2. ```bundle exec ruby app.rb```で実行
+
+2.```bundle exec ruby app.rb```で実行
+
+
+
 
