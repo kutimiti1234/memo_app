@@ -104,7 +104,7 @@ class MemoDatabase
   end
 
   def search_memo_by_id(id)
-    @memos.select { |row| row['id'] == id }.first
+    @memos.detect { |row| row['id'] == id }
   end
 
   def write
