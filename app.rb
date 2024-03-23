@@ -87,14 +87,16 @@ end
 class MemoDatabase
   attr_accessor :memos
 
+  CSV_PATH = './ouptut/Sample.csv'
+
   def initialize
-    unless File.exist?('./output/Sample.csv')
-      File.write('./output/Sample.csv', <<~CSV)
+    unless File.exist?(CSV_PATH)
+      File.write(CSV_PATH, <<~CSV)
         id,title,contetnt
       CSV
     end
 
-    @memos = CSV.read('./output/Sample.csv', headers: true)
+    @memos = CSV.read(CSV_PATH, headers: true)
   end
 
   def load_all_memos
@@ -106,7 +108,7 @@ class MemoDatabase
   end
 
   def write
-    File.write('./output/Sample.csv', @memos)
+    File.write(CSV_PATH, @memos)
   end
 
   def add(title:, content:)
