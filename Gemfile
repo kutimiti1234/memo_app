@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 # gem "rails"
 
-gem 'sinatra', '>= 4.0.0', github: 'sinatra/sinatra'
+gem 'sinatra', '>= 4.0.0'
 
 # other dependencies
 gem 'webrick', '>= 1.8.1'
