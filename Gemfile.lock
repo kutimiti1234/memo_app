@@ -1,17 +1,3 @@
-GIT
-  remote: https://github.com/sinatra/sinatra.git
-  revision: b626e2d82c23b4fde0b51782fd32ca27ccde1d1a
-  specs:
-    rack-protection (4.0.0)
-      base64 (>= 0.1.0)
-      rack (>= 3.0.0, < 4)
-    sinatra (4.0.0)
-      mustermann (~> 3.0)
-      rack (>= 3.0.0, < 4)
-      rack-protection (= 4.0.0)
-      rack-session (>= 2.0.0, < 3)
-      tilt (~> 2.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -79,6 +65,9 @@ GEM
       racc
     racc (1.7.3)
     rack (3.0.8)
+    rack-protection (4.0.0)
+      base64 (>= 0.1.0)
+      rack (>= 3.0.0, < 4)
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rackup (2.1.0)
@@ -109,6 +98,12 @@ GEM
       parser (>= 3.2.1.0)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
+    sinatra (4.0.0)
+      mustermann (~> 3.0)
+      rack (>= 3.0.0, < 4)
+      rack-protection (= 4.0.0)
+      rack-session (>= 2.0.0, < 3)
+      tilt (~> 2.0)
     sinatra-contrib (4.0.0)
       multi_json (>= 0.0.2)
       mustermann (~> 3.0)
@@ -129,7 +124,7 @@ PLATFORMS
 DEPENDENCIES
   erb_lint
   rackup (~> 2.1)
-  sinatra (>= 4.0.0)!
+  sinatra (>= 4.0.0)
   sinatra-contrib (~> 4.0)
   webrick (>= 1.8.1)
 
