@@ -14,3 +14,5 @@ gem 'rackup', '~> 2.1'
 gem 'sinatra-contrib', '~> 4.0'
 
 gem 'erb_lint', require: false
+
+gem 'pg'
