@@ -1,0 +1,11 @@
+<form class="memo-list" action="" method="get">
+    <% @memos.each do |memo| %>
+      <a class='memo-list' href="/memos/<%= memo['id'].to_s %>">・<%= h memo['title'] %></a>
+      <br>
+    <% end %>
+</form>
+<div class="ui">
+<form class="ui-button" action="/memos/new" method="get">
+  <button class="ui-button">追加</button>
+</form>
+</div>
