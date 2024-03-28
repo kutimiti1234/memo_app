@@ -1,48 +1,33 @@
+# frozen_string_literal: true
+
+require 'pg'
+
 # メモの読み書き、表示、削除用のクラス。
 class MemoDatabase
-  attr_accessor :memos
-
-  OUTPUT_PATH = './output/'
-  CSV_PATH = './output/Sample.csv'
-
   def initialize
-    unless File.exist?(CSV_PATH)
-      Dir.mkdir('output', 0o755) unless File.exist?(OUTPUT_PATH)
-      File.write(CSV_PATH, <<~CSV)
-        id,title,contetnt
-      CSV
-    end
-
-    @memos = CSV.read(CSV_PATH, headers: true)
+    @conn = PG.connect(dbname: 'memodb')
+    @conn.exec('CREATE TABLE IF NOT EXISTS public.memo_t(id uuid NOT NULL DEFAULT gen_random_uuid()
+      ,title character varying COLLATE pg_catalog."default"
+      ,content character varying COLLATE pg_catalog."default",CONSTRAINT uuid_table_pkey PRIMARY KEY (id))')
   end
 
   def load_all_memos
-    @memos
+    @conn.exec_params('SELECT * FROM memo_t').to_a
   end
 
   def search_memo_by_id(id)
-    @memos.detect { |row| row['id'] == id }
-  end
-
-  def write
-    File.write(CSV_PATH, @memos)
+    @conn.exec_params('SELECT * FROM memo_t WHERE id = $1', [id]).to_a.first
   end
 
   def add(title:, content:)
-    new_id = SecureRandom.uuid
-    @memos << CSV::Row.new(%w[id title content], [new_id, title, content])
-    write
+    @conn.exec('INSERT INTO memo_t(title,content) VALUES($1,$2)', [title, content])
   end
 
   def update(id:, title:, content:)
-    row_index = @memos['id'].find_index(id)
-    @memos[row_index]['title'] = title
-    @memos[row_index]['content'] = content
-    write
+    @conn.exec('UPDATE memo_t SET title = $1, content = $2 WHERE id = $3', [title, content, id])
   end
 
   def delete(id)
-    @memos = CSV::Table.new(@memos.reject { |row| row['id'] == id })
-    write
+    @conn.exec('DELETE FROM memo_t where id = $1', [id])
   end
 end

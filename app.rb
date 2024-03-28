@@ -3,7 +3,6 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'csv'
-require 'securerandom'
 require_relative 'lib/memo'
 
 configure do
