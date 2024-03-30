@@ -1,0 +1,6 @@
+production:
+  dbname: your_production_database_name
+  user: your_production_username
+  password: your_production_password
+  host: your_production_host
+  port: your_production_port

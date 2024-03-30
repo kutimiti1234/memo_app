@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 require 'pg'
-
+require 'yaml'
 # メモの読み書き、表示、削除用のクラス。
 class MemoDatabase
   def initialize
-    @conn = PG.connect(dbname: 'memodb')
+    db_config = YAML.load_file('database.yml')
+    production_config = db_config['productin']
+    @conn = PG.connect(production_config)
     @conn.exec('CREATE TABLE IF NOT EXISTS public.memo_t(id uuid NOT NULL DEFAULT gen_random_uuid()
       ,title character varying COLLATE pg_catalog."default"
       ,content character varying COLLATE pg_catalog."default",CONSTRAINT uuid_table_pkey PRIMARY KEY (id))')
