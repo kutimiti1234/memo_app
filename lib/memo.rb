@@ -6,7 +6,7 @@ require 'yaml'
 class MemoDatabase
   def initialize
     db_config = YAML.load_file('database.yml')
-    production_config = db_config['productin']
+    production_config = db_config['production']
     @conn = PG.connect(production_config)
     @conn.exec('CREATE TABLE IF NOT EXISTS public.memo_t(id uuid NOT NULL DEFAULT gen_random_uuid()
       ,title character varying COLLATE pg_catalog."default"
