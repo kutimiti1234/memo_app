@@ -20,14 +20,14 @@ class MemoDatabase
   end
 
   def add(title:, content:)
-    @conn.exec('INSERT INTO memo_t(title,content) VALUES($1,$2)', [title, content])
+    @conn.exec_params('INSERT INTO memo_t(title,content) VALUES($1,$2)', [title, content])
   end
 
   def update(id:, title:, content:)
-    @conn.exec('UPDATE memo_t SET title = $1, content = $2 WHERE id = $3', [title, content, id])
+    @conn.exec_params('UPDATE memo_t SET title = $1, content = $2 WHERE id = $3', [title, content, id])
   end
 
   def delete(id)
-    @conn.exec('DELETE FROM memo_t where id = $1', [id])
+    @conn.exec_params('DELETE FROM memo_t where id = $1', [id])
   end
 end
