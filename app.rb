@@ -4,9 +4,14 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'csv'
 require_relative 'lib/memo'
+require_relative 'lib/conncector'
+require 'yaml'
 
 configure do
-  set :database, MemoDatabase.new
+  db_config = YAML.load_file('database.yml')
+  production_config = db_config['production']
+  DatabaseConnector.connect(production_config)
+  DatabaseConnector.create_table
 end
 
 helpers do
@@ -20,7 +25,8 @@ get '/' do
 end
 
 get '/memos' do
-  @memos = settings.database.load_all_memos
+  database = MemoDatabase.new(DatabaseConnector.conn)
+  @memos = database.load_all_memos
   @title = 'top'
 
   status 200
@@ -35,7 +41,8 @@ get '/memos/new' do
 end
 
 get '/memos/:memo_id' do
-  @memo = settings.database.search_memo_by_id(params['memo_id'])
+  database = MemoDatabase.new(DatabaseConnector.conn)
+  @memo = database.search_memo_by_id(params['memo_id'])
   pass if @memo.nil?
   @id = params['memo_id']
   @title = 'Show memo'
@@ -45,7 +52,8 @@ get '/memos/:memo_id' do
 end
 
 get '/memos/:memo_id/edit' do
-  @memo = settings.database.search_memo_by_id(params['memo_id'])
+  database = MemoDatabase.new(DatabaseConnector.conn)
+  @memo = database.search_memo_by_id(params['memo_id'])
   @id = params['memo_id']
   @title = 'Edit memo'
   pass unless @memo
@@ -55,24 +63,27 @@ get '/memos/:memo_id/edit' do
 end
 
 post '/memos/' do
-  settings.database.add(title: params[:title], content: params[:content])
+  database = MemoDatabase.new(DatabaseConnector.conn)
+  database.add(title: params[:title], content: params[:content])
 
   redirect '/memos'
 end
 
 delete '/memos/:memo_id' do
-  memo = settings.database.search_memo_by_id(params['memo_id'])
+  database = MemoDatabase.new(DatabaseConnector.conn)
+  memo = database.search_memo_by_id(params['memo_id'])
   id = params['memo_id']
   pass if memo.nil?
 
-  settings.database.delete(id)
+  database.delete(id)
   redirect '/memos'
 end
 
 patch '/memos/:memo_id' do
+  database = MemoDatabase.new(DatabaseConnector.conn)
   id = params['memo_id']
 
-  settings.database.update(id: id, title: params['title'], content: params['content'])
+  database.update(id: id, title: params['title'], content: params['content'])
   redirect '/memos'
 end
 
