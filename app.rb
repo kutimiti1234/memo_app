@@ -3,7 +3,16 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'csv'
-require 'securerandom'
+require_relative 'lib/memo'
+require_relative 'lib/conncector'
+require 'yaml'
+
+configure do
+  db_config = YAML.load_file('database.yml')
+  production_config = db_config['production']
+  DatabaseConnector.connect(production_config)
+  DatabaseConnector.create_table
+end
 
 helpers do
   def h(text)
@@ -16,7 +25,7 @@ get '/' do
 end
 
 get '/memos' do
-  database = MemoDatabase.new
+  database = MemoDatabase.new(DatabaseConnector.conn)
   @memos = database.load_all_memos
   @title = 'top'
 
@@ -32,7 +41,7 @@ get '/memos/new' do
 end
 
 get '/memos/:memo_id' do
-  database = MemoDatabase.new
+  database = MemoDatabase.new(DatabaseConnector.conn)
   @memo = database.search_memo_by_id(params['memo_id'])
   pass if @memo.nil?
   @id = params['memo_id']
@@ -43,7 +52,7 @@ get '/memos/:memo_id' do
 end
 
 get '/memos/:memo_id/edit' do
-  database = MemoDatabase.new
+  database = MemoDatabase.new(DatabaseConnector.conn)
   @memo = database.search_memo_by_id(params['memo_id'])
   @id = params['memo_id']
   @title = 'Edit memo'
@@ -54,14 +63,14 @@ get '/memos/:memo_id/edit' do
 end
 
 post '/memos/' do
-  database = MemoDatabase.new
+  database = MemoDatabase.new(DatabaseConnector.conn)
   database.add(title: params[:title], content: params[:content])
 
   redirect '/memos'
 end
 
 delete '/memos/:memo_id' do
-  database = MemoDatabase.new
+  database = MemoDatabase.new(DatabaseConnector.conn)
   memo = database.search_memo_by_id(params['memo_id'])
   id = params['memo_id']
   pass if memo.nil?
@@ -71,7 +80,7 @@ delete '/memos/:memo_id' do
 end
 
 patch '/memos/:memo_id' do
-  database = MemoDatabase.new
+  database = MemoDatabase.new(DatabaseConnector.conn)
   id = params['memo_id']
 
   database.update(id: id, title: params['title'], content: params['content'])
@@ -81,53 +90,4 @@ end
 not_found do
   status 404
   '404 - Not Found'
-end
-
-# メモの読み書き、表示、削除用のクラス。
-class MemoDatabase
-  attr_accessor :memos
-
-  OUTPUT_PATH = './output/'
-  CSV_PATH = './output/Sample.csv'
-
-  def initialize
-    unless File.exist?(CSV_PATH)
-      Dir.mkdir('output', 0o755) unless File.exist?(OUTPUT_PATH)
-      File.write(CSV_PATH, <<~CSV)
-        id,title,contetnt
-      CSV
-    end
-
-    @memos = CSV.read(CSV_PATH, headers: true)
-  end
-
-  def load_all_memos
-    @memos
-  end
-
-  def search_memo_by_id(id)
-    @memos.detect { |row| row['id'] == id }
-  end
-
-  def write
-    File.write(CSV_PATH, @memos)
-  end
-
-  def add(title:, content:)
-    new_id = SecureRandom.uuid
-    @memos << CSV::Row.new(%w[id title content], [new_id, title, content])
-    write
-  end
-
-  def update(id:, title:, content:)
-    row_index = @memos['id'].find_index(id)
-    @memos[row_index]['title'] = title
-    @memos[row_index]['content'] = content
-    write
-  end
-
-  def delete(id)
-    @memos = CSV::Table.new(@memos.reject { |row| row['id'] == id })
-    write
-  end
 end
